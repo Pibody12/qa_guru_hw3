@@ -39,7 +39,7 @@ public class PracticeFormTests {
         $(byText("Sports")).click();
         $(byText("Reading")).click();
         $(byText("Music")).click();
-        $("#uploadPicture").uploadFile(new File("src/test/resources/photo.jpg"));
+        $("#uploadPicture").uploadFromClasspath("photo.jpg");
         executeJavaScript("window.scrollBy(0, 500);");
         $("#currentAddress").setValue("Pirogova str., 5 house, 4 room");
         $("#react-select-3-input").click();
