@@ -14,15 +14,19 @@ import static tests.testData.TestData.*;
 public class PracticeFormTests {
 
     @BeforeAll
-    static void beforeAll() {
+    static void openBrowser() {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
     }
 
     @Test
-    void fillForms() {
+    void fillFullTest() {
         open("");
+        executeJavaScript("""
+        document.getElementById('fixedban')?.remove();
+        document.querySelector('footer')?.remove();
+        """);
         $$(".card-body").findBy(text("Forms")).click();
         $$(".router-link").findBy(text("Practice Form")).click();
         $("#firstName").setValue(userFirstName);

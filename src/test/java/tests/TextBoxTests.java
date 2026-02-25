@@ -14,16 +14,19 @@ import static tests.testData.TestData.*;
 public class TextBoxTests {
 
     @BeforeAll
-    static void beforeAll() {
+    static void openBrowser() {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
     }
 
     @Test
-    void fillFormTest() {
-
+    void fillFullFormTest() {
         open("");
+        executeJavaScript("""
+        document.getElementById('fixedban')?.remove();
+        document.querySelector('footer')?.remove();
+        """);
         $$(".card-body").findBy(text("Elements")).click();
         $$(".router-link").findBy(text("Text Box")).click();
         $("#userName").setValue(userFirstName + " " + userLastName);
@@ -40,9 +43,6 @@ public class TextBoxTests {
 
     @Test
     void fillFormWithoutAddressTest() {
-//        String userName = "Tim Drob";
-//        String userEmail = "tim@test.ru";
-
         open("");
         $$(".card-body").findBy(text("Elements")).click();
         $$(".router-link").findBy(text("Text Box")).click();
