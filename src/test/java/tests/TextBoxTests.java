@@ -14,7 +14,7 @@ import static tests.testData.TestData.*;
 public class TextBoxTests {
 
     @BeforeAll
-    static void openBrowser() {
+    static void setupSelenideConfig() {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
