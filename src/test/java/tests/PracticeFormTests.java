@@ -3,15 +3,18 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pages.PracticeFormPage;
+import pages.components.RegistrationResultComponent;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 import static tests.testData.TestData.*;
 
 public class PracticeFormTests {
+    PracticeFormPage practiceFormPage = new PracticeFormPage();
+    RegistrationResultComponent resultForm = new RegistrationResultComponent();
 
     @BeforeAll
     static void setupSelenideConfig() {
@@ -22,6 +25,40 @@ public class PracticeFormTests {
 
     @Test
     void fillFullTest() {
+        practiceFormPage.openPage()
+                .typeFirstname(userFirstName)
+                .typeLastname(userLastName)
+                .typeEmail(userEmail)
+                .setGender(userGender)
+                .typePhone(userPhoneNumber)
+                .setDateOfBirth(userBirthdayDay, userBirthdayMonth, userBirthdayYear)
+                .typeSubjects(userSubject)
+                .selectHobbies(userHobbies1)
+                .selectHobbies(userHobbies2)
+                .selectHobbies(userHobbies3)
+                .uploadPicture(userFile)
+                .scrollPage()
+                .setAddress(userAddress)
+                .setStateAndCity(userState, userCity)
+                .submitButtonClick();
+
+        // Проверка формы и заполненых полей
+        resultForm.checkModalForm()
+                .checkKeyValue("Student Name", userName)
+                .checkKeyValue("Student Email", userEmail)
+                .checkKeyValue("Gender", userGender)
+                .checkKeyValue("Mobile", userPhoneNumber)
+                .checkKeyValue("Date of Birth", userBirthdayDate)
+                .checkKeyValue("Subjects", userSubject)
+                .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
+                .checkKeyValue("Subjects", userSubject)
+                .checkKeyValue("Picture", userFile)
+                .checkKeyValue("Address", userAddress)
+                .checkKeyValue("State and City", userState + " " + userCity);
+    }
+
+    @Test
+    void fillFullTest_old() {
         open("");
         executeJavaScript("""
         document.getElementById('fixedban')?.remove();
@@ -33,7 +70,7 @@ public class PracticeFormTests {
         $("#lastName").setValue(userLastName);
         $("#userEmail").setValue(userEmail);
         $(byText("Male")).click();
-        $("#userNumber").setValue(userNumber);
+        $("#userNumber").setValue(userPhoneNumber);
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(userBirthdayMonth);
         $(".react-datepicker__year-select").selectOption(userBirthdayYear);
@@ -43,12 +80,12 @@ public class PracticeFormTests {
         $(byText("Sports")).click();
         $(byText("Reading")).click();
         $(byText("Music")).click();
-        $("#uploadPicture").uploadFromClasspath("photo.jpg");
+        $("#uploadPicture").uploadFromClasspath("Image/photo.jpg");
         executeJavaScript("window.scrollBy(0, 500);");
         $("#currentAddress").setValue(userAddress);
-        $("#react-select-3-input").click();
+        $("#state").click();
         $("#react-select-3-option-2").click();
-        $("#react-select-4-input").click();
+        $("#city").click();
         $("#react-select-4-option-1").click();
         $("#submit").click();
 
@@ -56,7 +93,7 @@ public class PracticeFormTests {
         $("table").findAll("tr").findBy(text(userFirstName + " " + userLastName)).shouldBe(visible);
         $("table").findAll("tr").findBy(text(userEmail)).shouldBe(visible);
         $("table").findAll("tr").findBy(text(userGender)).shouldBe(visible);
-        $("table").findAll("tr").findBy(text(userNumber)).shouldBe(visible);
+        $("table").findAll("tr").findBy(text(userPhoneNumber)).shouldBe(visible);
         $("table").findAll("tr").findBy(text(userBirthdayDay + " " + userBirthdayMonth + "," + userBirthdayYear)).shouldBe(visible);
         $("table").findAll("tr").findBy(text(userSubject)).shouldBe(visible);
         $("table").findAll("tr").findBy(text(userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)).shouldBe(visible);
