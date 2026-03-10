@@ -21,5 +21,4 @@ public class TestData {
     public static String userFile = "photo.jpg";
     public static String userState = "Haryana";
     public static String userCity = "Panipat";
-
 }

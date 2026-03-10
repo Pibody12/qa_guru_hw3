@@ -6,7 +6,6 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.SetValueOptions.withText;
 
 public class RegistrationResultComponent {
     private SelenideElement modalWindow = $(".modal-dialog");

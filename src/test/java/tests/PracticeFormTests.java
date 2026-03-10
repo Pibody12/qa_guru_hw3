@@ -11,6 +11,8 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 import static tests.testData.TestData.*;
+import static tests.testData.FakerTestData.*;
+import static utils.RandomUtils.*;
 
 public class PracticeFormTests {
     PracticeFormPage practiceFormPage = new PracticeFormPage();
@@ -25,35 +27,41 @@ public class PracticeFormTests {
 
     @Test
     void fillFullTest() {
+        String randomGender = getRandomGender();
+        String randomBirthdayDay = String.valueOf(getRandomInt(0, 30));
+        String randomMonth = getRandomMonth();
+        String randomBirthdayYear = String.valueOf(getRandomInt(1992, 2026));
+        String randomBirthdayDate = randomBirthdayDay + " " + randomMonth + "," + randomBirthdayYear;
+        String randomSubject = getRandomSubjects();
+
         practiceFormPage.openPage()
-                .typeFirstname(userFirstName)
-                .typeLastname(userLastName)
-                .typeEmail(userEmail)
-                .setGender(userGender)
-                .typePhone(userPhoneNumber)
-                .setDateOfBirth(userBirthdayDay, userBirthdayMonth, userBirthdayYear)
-                .typeSubjects(userSubject)
+                .typeFirstname(fakerUserFirstName)
+                .typeLastname(fakerUserLastName)
+                .typeEmail(fakerUserEmail)
+                .setGender(randomGender)
+                .typePhone(fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, randomMonth, randomBirthdayYear)
+                .typeSubjects(randomSubject)
                 .selectHobbies(userHobbies1)
                 .selectHobbies(userHobbies2)
                 .selectHobbies(userHobbies3)
                 .uploadPicture(userFile)
                 .scrollPage()
-                .setAddress(userAddress)
+                .setAddress(fakerUserAddress)
                 .setStateAndCity(userState, userCity)
                 .submitButtonClick();
 
         // Проверка формы и заполненых полей
         resultForm.checkModalForm()
-                .checkKeyValue("Student Name", userName)
-                .checkKeyValue("Student Email", userEmail)
-                .checkKeyValue("Gender", userGender)
-                .checkKeyValue("Mobile", userPhoneNumber)
-                .checkKeyValue("Date of Birth", userBirthdayDate)
-                .checkKeyValue("Subjects", userSubject)
+                .checkKeyValue("Student Name", fakerUserFirstName +  " " + fakerUserLastName)
+                .checkKeyValue("Student Email", fakerUserEmail)
+                .checkKeyValue("Gender", randomGender)
+                .checkKeyValue("Mobile", fakerUserPhoneNumber)
+                .checkKeyValue("Date of Birth", randomBirthdayDate)
                 .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
-                .checkKeyValue("Subjects", userSubject)
+                .checkKeyValue("Subjects", randomSubject)
                 .checkKeyValue("Picture", userFile)
-                .checkKeyValue("Address", userAddress)
+                .checkKeyValue("Address", fakerUserAddress)
                 .checkKeyValue("State and City", userState + " " + userCity);
     }
 
