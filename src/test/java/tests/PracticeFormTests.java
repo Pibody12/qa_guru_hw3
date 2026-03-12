@@ -26,6 +26,7 @@ public class PracticeFormTests {
     @Test
     void fillFullTest() {
         practiceFormPage.openPage()
+                .removeAdvertBanner()
                 .typeFirstname(userFirstName)
                 .typeLastname(userLastName)
                 .typeEmail(userEmail)
