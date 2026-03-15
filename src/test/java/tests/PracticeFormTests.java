@@ -33,6 +33,8 @@ public class PracticeFormTests {
         String randomBirthdayYear = String.valueOf(getRandomInt(1992, 2026));
         String randomBirthdayDate = randomBirthdayDay + " " + randomMonth + "," + randomBirthdayYear;
         String randomSubject = getRandomSubjects();
+        String randomState = getRandomState();
+        String randomCity = getRandomCity(randomState);
 
         practiceFormPage.openPage()
                 .typeFirstname(fakerUserFirstName)
@@ -48,7 +50,7 @@ public class PracticeFormTests {
                 .uploadPicture(userFile)
                 .scrollPage()
                 .setAddress(fakerUserAddress)
-                .setStateAndCity(userState, userCity)
+                .setStateAndCity(randomState, randomCity)
                 .submitButtonClick();
 
         // Проверка формы и заполненых полей
@@ -62,7 +64,7 @@ public class PracticeFormTests {
                 .checkKeyValue("Subjects", randomSubject)
                 .checkKeyValue("Picture", userFile)
                 .checkKeyValue("Address", fakerUserAddress)
-                .checkKeyValue("State and City", userState + " " + userCity);
+                .checkKeyValue("State and City", randomState + " " + randomCity);
     }
 
     @Test

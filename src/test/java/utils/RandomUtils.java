@@ -81,13 +81,31 @@ public class RandomUtils {
         return getRandomItemFromStringArray(subjects);
     }
 
-    public static String getRandomStateAndCity() {
-        String result = ;
-        String[] state = {"NRC", "Uttar Pradesh", "Huryana", "Rajasthan"};
+    public static String getRandomState() {
+        String[] stateArray = {"NCR", "Uttar Pradesh", "Haryana", "Rajasthan"};
 
-        return getRandomItemFromStringArray();
+        return getRandomItemFromStringArray(stateArray);
+    }
 
+    public static String getRandomCity(String State) {
+        String City = "";
 
+        String[] cityArrayForNRC = {"Delhi", "Gurgaon", "Noida"};
+        String[] cityArrayForUttarPradesh = {"Agra", "Lucknow", "Merrut"};
+        String[] cityArrayForHaryana = {"Karnal", "Panipat"};
+        String[] cityArrayForRajasthan = {"Jaipur", "Jaiselmer"};
+
+        if (State.equals("NCR")) {
+            City = getRandomItemFromStringArray(cityArrayForNRC);
+        } else if (State.equals("Uttar Pradesh")) {
+            City = getRandomItemFromStringArray(cityArrayForUttarPradesh);
+        } else if (State.equals("Haryana")) {
+            City = getRandomItemFromStringArray(cityArrayForHaryana);
+        } else if (State.equals("Rajasthan")) {
+            City = getRandomItemFromStringArray(cityArrayForRajasthan);
+        }
+
+        return City;
     }
 
     // плохие практики
