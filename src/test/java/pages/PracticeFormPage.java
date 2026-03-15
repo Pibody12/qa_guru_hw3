@@ -15,19 +15,19 @@ public class PracticeFormPage {
     CalendarComponent calendar = new CalendarComponent();
 
     // Elements
-    private SelenideElement firstNameInput = $("#firstName");
-    private SelenideElement lastNameInput =  $("#lastName");
-    private SelenideElement emailInput = $("#userEmail");
-    private SelenideElement genderContainer = $("#genterWrapper");
-    private SelenideElement phoneInput = $("#userNumber");
-    private SelenideElement dateOfBirthdayInput = $("#dateOfBirthInput");
-    private SelenideElement subjectsInput = $("#subjectsInput");
-    private SelenideElement stateCityContainer = $("#stateCity-wrapper");
-    private SelenideElement stateSelect= $("#state");
-    private SelenideElement citySelect= $("#city");
-    private SelenideElement uploadPicture= $("#uploadPicture");
-    private SelenideElement addressInput= $("#currentAddress");
-    private SelenideElement submitButton = $("#submit");
+    private final SelenideElement firstNameInput = $("#firstName");
+    private final SelenideElement lastNameInput =  $("#lastName");
+    private final SelenideElement emailInput = $("#userEmail");
+    private final SelenideElement genderContainer = $("#genterWrapper");
+    private final SelenideElement phoneInput = $("#userNumber");
+    private final SelenideElement dateOfBirthdayInput = $("#dateOfBirthInput");
+    private final SelenideElement subjectsInput = $("#subjectsInput");
+    private final SelenideElement stateCityContainer = $("#stateCity-wrapper");
+    private final SelenideElement stateSelect= $("#state");
+    private final SelenideElement citySelect= $("#city");
+    private final SelenideElement uploadPicture= $("#uploadPicture");
+    private final SelenideElement addressInput= $("#currentAddress");
+    private final SelenideElement submitButton = $("#submit");
 
 
     //Actions
@@ -133,13 +133,6 @@ public class PracticeFormPage {
 
     public PracticeFormPage setAddress(String value) {
         addressInput.setValue(value);
-
-        return this;
-    }
-
-    public PracticeFormPage setStateAndCity(String state, String city) {
-        setState(state);
-        setCity(city);
 
         return this;
     }

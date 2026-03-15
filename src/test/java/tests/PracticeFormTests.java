@@ -40,7 +40,8 @@ public class PracticeFormTests {
                 .uploadPicture(userFile)
                 .scrollPage()
                 .setAddress(userAddress)
-                .setStateAndCity(userState, userCity)
+                .setState(userState)
+                .setCity(userCity)
                 .submitButtonClick();
 
         // Проверка формы и заполненых полей
