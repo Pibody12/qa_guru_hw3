@@ -19,7 +19,7 @@ public class PracticeFormTests {
     RegistrationResultComponent resultForm = new RegistrationResultComponent();
 
     @BeforeAll
-    static void openBrowser() {
+    static void setupSelenideConfig() {
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
         Configuration.pageLoadStrategy = "eager";
@@ -50,7 +50,8 @@ public class PracticeFormTests {
                 .uploadPicture(userFile)
                 .scrollPage()
                 .setAddress(fakerUserAddress)
-                .setStateAndCity(randomState, randomCity)
+                .setState(randomState)
+                .setCity(randomCity)
                 .submitButtonClick();
 
         // Проверка формы и заполненых полей

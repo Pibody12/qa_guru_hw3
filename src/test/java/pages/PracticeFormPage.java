@@ -33,6 +33,11 @@ public class PracticeFormPage {
     //Actions
     public PracticeFormPage openPage() {
         open("/automation-practice-form");
+
+        return this;
+    }
+
+    public PracticeFormPage removeAdvertBanner() {
         executeJavaScript("""
         document.getElementById('fixedban')?.remove();
         document.querySelector('footer')?.remove();
@@ -68,7 +73,7 @@ public class PracticeFormPage {
 
     // выбор гендера мой вариант
     public PracticeFormPage setGender(String value) {
-        $(byText(value)).click();
+        genderContainer.$(byText(value)).click();
 
         return this;
     }
@@ -128,13 +133,6 @@ public class PracticeFormPage {
 
     public PracticeFormPage setAddress(String value) {
         addressInput.setValue(value);
-
-        return this;
-    }
-
-    public PracticeFormPage setStateAndCity(String state, String city) {
-        setState(state);
-        setCity(city);
 
         return this;
     }

@@ -52,97 +52,98 @@ public class TextBoxTests {
                 .checkField("email", fakerUserEmail)
                 .checkField("currentAddress", fakerUserCurrentAddress)
                 .checkField("permanentAddress", fakerUserPermanentAddress);
+        }
+
+
+        @Test
+        void fillFormWithoutAddressTest () {
+            textBoxPage.openPage();
+            textBoxPage.typeUserName(fakerUserFullName);
+            textBoxPage.typeUserEmail(fakerUserEmail);
+            textBoxPage.submitButtonClick();
+
+            textBoxPage.checkField("name", fakerUserFullName);
+            textBoxPage.checkField("email", fakerUserEmail);
+        }
+
+        @Test
+        void fillFormWithoutAddressTest_dsl () {
+            textBoxPage.openPage()
+                    .typeUserName(userName)
+                    .typeUserEmail(userEmail)
+                    .submitButtonClick()
+
+                    .checkField("name", userName)
+                    .checkField("email", userEmail);
+        }
+
+        @Test
+        void fillFormTest_with_faker () {
+            Faker faker = new Faker();
+            Faker fakerRu = new Faker(new Locale("ru"));
+
+            String userName = fakerRu.name().fullName();
+            String userEmail = faker.internet().emailAddress();
+            String currentAddress = fakerRu.address().fullAddress();
+            String permanentAddress = fakerRu.address().buildingNumber();
+
+            textBoxPage.openPage()
+                    .typeUserName(userName)
+                    .typeUserEmail(userEmail)
+                    .typeCurrentAddress(currentAddress)
+                    .typePermanentAddress(permanentAddress)
+                    .submitButtonClick()
+
+                    .checkField("name", userName)
+                    .checkField("email", userEmail)
+                    .checkField("currentAddress", currentAddress)
+                    .checkField("permanentAddress", permanentAddress);
+        }
+
+        @Test
+        void fillFormTest_with_utils () {
+            String userName = getRandomString(10);
+            String userEmail = getRandomEmail();
+            String currentAddress = getRandomString(15);
+            String permanentAddress = getRandomString(12);
+
+            textBoxPage.openPage()
+                    .typeUserName(userName)
+                    .typeUserEmail(userEmail)
+                    .typeCurrentAddress(currentAddress)
+                    .typePermanentAddress(permanentAddress)
+                    .submitButtonClick()
+
+                    .checkField("name", userName)
+                    .checkField("email", userEmail)
+                    .checkField("currentAddress", currentAddress)
+                    .checkField("permanentAddress", permanentAddress);
+        }
+
+        @Test
+        void fillFormWithoutAddressTest_old () {
+            open("/text-box");
+            $("#userName").setValue("Tim Drob");
+            $("#userEmail").setValue("tim@test.ru");
+            $("#submit").click();
+
+            $("#output #name").shouldHave(text("Tim"));
+            $("#output #email").shouldHave(text("tim@test.ru"));
+        }
+
+        @Test
+        void fillFormTest_with_utils_with_before_each () {
+
+            textBoxPage.openPage()
+                    .typeUserName(randomUserName)
+                    .typeUserEmail(randomUserEmail)
+                    .typeCurrentAddress(randomCurrentAddress)
+                    .typePermanentAddress(randomPermanentAddress)
+                    .submitButtonClick()
+
+                    .checkField("name", randomUserName)
+                    .checkField("email", randomUserEmail)
+                    .checkField("currentAddress", randomCurrentAddress)
+                    .checkField("permanentAddress", randomPermanentAddress);
+        }
     }
-
-    @Test
-    void fillFormWithoutAddressTest() {
-        textBoxPage.openPage();
-        textBoxPage.typeUserName(fakerUserFullName);
-        textBoxPage.typeUserEmail(fakerUserEmail);
-        textBoxPage.submitButtonClick();
-
-        textBoxPage.checkField("name", fakerUserFullName);
-        textBoxPage.checkField("email", fakerUserEmail);
-    }
-
-    @Test
-    void fillFormWithoutAddressTest_dsl() {
-        textBoxPage.openPage()
-                .typeUserName(userName)
-                .typeUserEmail(userEmail)
-                .submitButtonClick()
-
-                .checkField("name", userName)
-                .checkField("email", userEmail);
-    }
-
-    @Test
-    void fillFormTest_with_faker() {
-        Faker faker = new Faker();
-        Faker fakerRu = new Faker(new Locale("ru"));
-
-        String userName = fakerRu.name().fullName();
-        String userEmail = faker.internet().emailAddress();
-        String currentAddress = fakerRu.address().fullAddress();
-        String permanentAddress = fakerRu.address().buildingNumber();
-
-        textBoxPage.openPage()
-                .typeUserName(userName)
-                .typeUserEmail(userEmail)
-                .typeCurrentAddress(currentAddress)
-                .typePermanentAddress(permanentAddress)
-                .submitButtonClick()
-
-                .checkField("name", userName)
-                .checkField("email", userEmail)
-                .checkField("currentAddress", currentAddress)
-                .checkField("permanentAddress", permanentAddress);
-    }
-
-    @Test
-    void fillFormTest_with_utils() {
-        String userName = getRandomString(10);
-        String userEmail = getRandomEmail();
-        String currentAddress = getRandomString(15);
-        String permanentAddress = getRandomString(12);
-
-        textBoxPage.openPage()
-                .typeUserName(userName)
-                .typeUserEmail(userEmail)
-                .typeCurrentAddress(currentAddress)
-                .typePermanentAddress(permanentAddress)
-                .submitButtonClick()
-
-                .checkField("name", userName)
-                .checkField("email", userEmail)
-                .checkField("currentAddress", currentAddress)
-                .checkField("permanentAddress", permanentAddress);
-    }
-
-    @Test
-    void fillFormWithoutAddressTest_old() {
-        open("/text-box");
-        $("#userName").setValue("Tim Drob");
-        $("#userEmail").setValue("tim@test.ru");
-        $("#submit").click();
-
-        $("#output #name").shouldHave(text("Tim"));
-        $("#output #email").shouldHave(text("tim@test.ru"));
-    }
-
-    @Test
-    void fillFormTest_with_utils_with_before_each() {
-
-        textBoxPage.openPage()
-                .typeUserName(randomUserName)
-                .typeUserEmail(randomUserEmail)
-                .typeCurrentAddress(randomCurrentAddress)
-                .typePermanentAddress(randomPermanentAddress)
-                .submitButtonClick()
-
-                .checkField("name", randomUserName)
-                .checkField("email", randomUserEmail)
-                .checkField("currentAddress", randomCurrentAddress)
-                .checkField("permanentAddress", randomPermanentAddress);
-    }
-}
