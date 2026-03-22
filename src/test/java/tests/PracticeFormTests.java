@@ -5,18 +5,19 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pages.PracticeFormPage;
 import pages.components.RegistrationResultComponent;
+import tests.testData.FakerTestData;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Selenide.$;
 import static tests.testData.TestData.*;
-import static tests.testData.FakerTestData.*;
 import static utils.RandomUtils.*;
 
 public class PracticeFormTests {
     PracticeFormPage practiceFormPage = new PracticeFormPage();
     RegistrationResultComponent resultForm = new RegistrationResultComponent();
+    FakerTestData fakerTestData = new FakerTestData();
 
     @BeforeAll
     static void setupSelenideConfig() {
@@ -27,44 +28,41 @@ public class PracticeFormTests {
 
     @Test
     void fillFullTest() {
-        String randomGender = getRandomGender();
-        String randomBirthdayDay = String.valueOf(getRandomInt(0, 30));
-        String randomMonth = getRandomMonth();
-        String randomBirthdayYear = String.valueOf(getRandomInt(1992, 2026));
-        String randomBirthdayDate = randomBirthdayDay + " " + randomMonth + "," + randomBirthdayYear;
-        String randomSubject = getRandomSubjects();
+        String randomBirthdayDay = String.valueOf(fakerTestData.fakerBirthday);
+        String randomBirthdayYear = String.valueOf(fakerTestData.fakerYear);
+        String randomBirthdayDate = randomBirthdayDay + " " + fakerTestData.fakerMonth + "," + randomBirthdayYear;
         String randomState = getRandomState();
-        String randomCity = getRandomCity(randomState);
+        String randomCity = selectCity(randomState);
 
         practiceFormPage.openPage()
-                .typeFirstname(fakerUserFirstName)
-                .typeLastname(fakerUserLastName)
-                .typeEmail(fakerUserEmail)
-                .setGender(randomGender)
-                .typePhone(fakerUserPhoneNumber)
-                .setDateOfBirth(randomBirthdayDay, randomMonth, randomBirthdayYear)
-                .typeSubjects(randomSubject)
+                .typeFirstname(fakerTestData.fakerUserFirstName)
+                .typeLastname(fakerTestData.fakerUserLastName)
+                .typeEmail(fakerTestData.fakerUserEmail)
+                .setGender(fakerTestData.fakerGender)
+                .typePhone(fakerTestData.fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, fakerTestData.fakerMonth, randomBirthdayYear)
+                .typeSubjects(fakerTestData.fakerSubject)
                 .selectHobbies(userHobbies1)
                 .selectHobbies(userHobbies2)
                 .selectHobbies(userHobbies3)
                 .uploadPicture(userFile)
                 .scrollPage()
-                .setAddress(fakerUserAddress)
+                .setAddress(fakerTestData.fakerUserAddress)
                 .setState(randomState)
                 .setCity(randomCity)
                 .submitButtonClick();
 
         // Проверка формы и заполненых полей
         resultForm.checkModalForm()
-                .checkKeyValue("Student Name", fakerUserFirstName +  " " + fakerUserLastName)
-                .checkKeyValue("Student Email", fakerUserEmail)
-                .checkKeyValue("Gender", randomGender)
-                .checkKeyValue("Mobile", fakerUserPhoneNumber)
+                .checkKeyValue("Student Name", fakerTestData.fakerUserFirstName +  " " + fakerTestData.fakerUserLastName)
+                .checkKeyValue("Student Email", fakerTestData.fakerUserEmail)
+                .checkKeyValue("Gender", fakerTestData.fakerGender)
+                .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
                 .checkKeyValue("Date of Birth", randomBirthdayDate)
                 .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
-                .checkKeyValue("Subjects", randomSubject)
+                .checkKeyValue("Subjects", fakerTestData.fakerSubject)
                 .checkKeyValue("Picture", userFile)
-                .checkKeyValue("Address", fakerUserAddress)
+                .checkKeyValue("Address", fakerTestData.fakerUserAddress)
                 .checkKeyValue("State and City", randomState + " " + randomCity);
     }
 
