@@ -2,17 +2,25 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import pages.PracticeFormPage;
 import pages.components.RegistrationResultComponent;
 import tests.testData.FakerTestData;
+import tests.testData.UserName;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.$;
 import static tests.testData.TestData.*;
-import static utils.RandomUtils.*;
+import static utils.RandomUtils.getRandomState;
+import static utils.RandomUtils.selectCity;
 
 public class PracticeFormTests {
     PracticeFormPage practiceFormPage = new PracticeFormPage();
@@ -56,6 +64,181 @@ public class PracticeFormTests {
         resultForm.checkModalForm()
                 .checkKeyValue("Student Name", fakerTestData.fakerUserFirstName +  " " + fakerTestData.fakerUserLastName)
                 .checkKeyValue("Student Email", fakerTestData.fakerUserEmail)
+                .checkKeyValue("Gender", fakerTestData.fakerGender)
+                .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
+                .checkKeyValue("Date of Birth", randomBirthdayDate)
+                .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
+                .checkKeyValue("Subjects", fakerTestData.fakerSubject)
+                .checkKeyValue("Picture", userFile)
+                .checkKeyValue("Address", fakerTestData.fakerUserAddress)
+                .checkKeyValue("State and City", randomState + " " + randomCity);
+    }
+
+
+    @ParameterizedTest
+    @EnumSource
+    @DisplayName("Поверка формы с именами на разных языках")
+    void fillFullTestDifferentLanguagesInNames(UserName userName) {
+        String randomBirthdayDay = String.valueOf(fakerTestData.fakerBirthday);
+        String randomBirthdayYear = String.valueOf(fakerTestData.fakerYear);
+        String randomBirthdayDate = randomBirthdayDay + " " + fakerTestData.fakerMonth + "," + randomBirthdayYear;
+        String randomState = getRandomState();
+        String randomCity = selectCity(randomState);
+
+        practiceFormPage.openPage()
+                .typeFirstname(userName.firstName)
+                .typeLastname(userName.lastName)
+                .typeEmail(fakerTestData.fakerUserEmail)
+                .setGender(fakerTestData.fakerGender)
+                .typePhone(fakerTestData.fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, fakerTestData.fakerMonth, randomBirthdayYear)
+                .typeSubjects(fakerTestData.fakerSubject)
+                .selectHobbies(userHobbies1)
+                .selectHobbies(userHobbies2)
+                .selectHobbies(userHobbies3)
+                .uploadPicture(userFile)
+                .scrollPage()
+                .setAddress(fakerTestData.fakerUserAddress)
+                .setState(randomState)
+                .setCity(randomCity)
+                .submitButtonClick();
+
+        // Проверка формы и заполненых полей
+        resultForm.checkModalForm()
+                .checkKeyValue("Student Name", userName.firstName +  " " + userName.lastName)
+                .checkKeyValue("Student Email", fakerTestData.fakerUserEmail)
+                .checkKeyValue("Gender", fakerTestData.fakerGender)
+                .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
+                .checkKeyValue("Date of Birth", randomBirthdayDate)
+                .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
+                .checkKeyValue("Subjects", fakerTestData.fakerSubject)
+                .checkKeyValue("Picture", userFile)
+                .checkKeyValue("Address", fakerTestData.fakerUserAddress)
+                .checkKeyValue("State and City", randomState + " " + randomCity);
+    }
+
+
+    @ParameterizedTest (name = "форма с гендером {0}")
+    @ValueSource(strings = {"Male", "Female", "Other"})
+    @DisplayName("Поверка формы с разными гендерами")
+    void fillFullTestDifferentGender(String gender) {
+        String randomBirthdayDay = String.valueOf(fakerTestData.fakerBirthday);
+        String randomBirthdayYear = String.valueOf(fakerTestData.fakerYear);
+        String randomBirthdayDate = randomBirthdayDay + " " + fakerTestData.fakerMonth + "," + randomBirthdayYear;
+        String randomState = getRandomState();
+        String randomCity = selectCity(randomState);
+
+        practiceFormPage.openPage()
+                .typeFirstname(fakerTestData.fakerUserFirstName)
+                .typeLastname(fakerTestData.fakerUserLastName)
+                .typeEmail(fakerTestData.fakerUserEmail)
+                .setGender(gender)
+                .typePhone(fakerTestData.fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, fakerTestData.fakerMonth, randomBirthdayYear)
+                .typeSubjects(fakerTestData.fakerSubject)
+                .selectHobbies(userHobbies1)
+                .selectHobbies(userHobbies2)
+                .selectHobbies(userHobbies3)
+                .uploadPicture(userFile)
+                .scrollPage()
+                .setAddress(fakerTestData.fakerUserAddress)
+                .setState(randomState)
+                .setCity(randomCity)
+                .submitButtonClick();
+
+        // Проверка формы и заполненых полей
+        resultForm.checkModalForm()
+                .checkKeyValue("Student Name", fakerTestData.fakerUserFirstName +  " " + fakerTestData.fakerUserLastName)
+                .checkKeyValue("Student Email", fakerTestData.fakerUserEmail)
+                .checkKeyValue("Gender", gender)
+                .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
+                .checkKeyValue("Date of Birth", randomBirthdayDate)
+                .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
+                .checkKeyValue("Subjects", fakerTestData.fakerSubject)
+                .checkKeyValue("Picture", userFile)
+                .checkKeyValue("Address", fakerTestData.fakerUserAddress)
+                .checkKeyValue("State and City", randomState + " " + randomCity);
+    }
+
+
+    @ParameterizedTest
+    @DisplayName("Поверка формы с именами на разных языках")
+    @CsvSource(value = {
+            "Иван, Иванов",
+            "Morris, Hoffman",
+            "江藤, 颯真"
+    })
+    void fillFullTestDifferentLanguagesInNames2(String firstName, String lastName) {
+        String randomBirthdayDay = String.valueOf(fakerTestData.fakerBirthday);
+        String randomBirthdayYear = String.valueOf(fakerTestData.fakerYear);
+        String randomBirthdayDate = randomBirthdayDay + " " + fakerTestData.fakerMonth + "," + randomBirthdayYear;
+        String randomState = getRandomState();
+        String randomCity = selectCity(randomState);
+
+        practiceFormPage.openPage()
+                .typeFirstname(firstName)
+                .typeLastname(lastName)
+                .typeEmail(fakerTestData.fakerUserEmail)
+                .setGender(fakerTestData.fakerGender)
+                .typePhone(fakerTestData.fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, fakerTestData.fakerMonth, randomBirthdayYear)
+                .typeSubjects(fakerTestData.fakerSubject)
+                .selectHobbies(userHobbies1)
+                .selectHobbies(userHobbies2)
+                .selectHobbies(userHobbies3)
+                .uploadPicture(userFile)
+                .scrollPage()
+                .setAddress(fakerTestData.fakerUserAddress)
+                .setState(randomState)
+                .setCity(randomCity)
+                .submitButtonClick();
+
+        // Проверка формы и заполненых полей
+        resultForm.checkModalForm()
+                .checkKeyValue("Student Name", firstName +  " " + lastName)
+                .checkKeyValue("Student Email", fakerTestData.fakerUserEmail)
+                .checkKeyValue("Gender", fakerTestData.fakerGender)
+                .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
+                .checkKeyValue("Date of Birth", randomBirthdayDate)
+                .checkKeyValue("Hobbies", userHobbies1 + ", " + userHobbies2 + ", " + userHobbies3)
+                .checkKeyValue("Subjects", fakerTestData.fakerSubject)
+                .checkKeyValue("Picture", userFile)
+                .checkKeyValue("Address", fakerTestData.fakerUserAddress)
+                .checkKeyValue("State and City", randomState + " " + randomCity);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Поверка формы с почтой из разных доменов")
+    @CsvFileSource(resources = "/test_data/fillFullTestDifferentEmailDomen.csv")
+    void fillFullTestDifferentEmailDomen(String email) {
+        String randomBirthdayDay = String.valueOf(fakerTestData.fakerBirthday);
+        String randomBirthdayYear = String.valueOf(fakerTestData.fakerYear);
+        String randomBirthdayDate = randomBirthdayDay + " " + fakerTestData.fakerMonth + "," + randomBirthdayYear;
+        String randomState = getRandomState();
+        String randomCity = selectCity(randomState);
+
+        practiceFormPage.openPage()
+                .typeFirstname(fakerTestData.fakerUserFirstName)
+                .typeLastname(fakerTestData.fakerUserLastName)
+                .typeEmail(email)
+                .setGender(fakerTestData.fakerGender)
+                .typePhone(fakerTestData.fakerUserPhoneNumber)
+                .setDateOfBirth(randomBirthdayDay, fakerTestData.fakerMonth, randomBirthdayYear)
+                .typeSubjects(fakerTestData.fakerSubject)
+                .selectHobbies(userHobbies1)
+                .selectHobbies(userHobbies2)
+                .selectHobbies(userHobbies3)
+                .uploadPicture(userFile)
+                .scrollPage()
+                .setAddress(fakerTestData.fakerUserAddress)
+                .setState(randomState)
+                .setCity(randomCity)
+                .submitButtonClick();
+
+        // Проверка формы и заполненых полей
+        resultForm.checkModalForm()
+                .checkKeyValue("Student Name", fakerTestData.fakerUserFirstName +  " " + fakerTestData.fakerUserLastName)
+                .checkKeyValue("Student Email", email)
                 .checkKeyValue("Gender", fakerTestData.fakerGender)
                 .checkKeyValue("Mobile", fakerTestData.fakerUserPhoneNumber)
                 .checkKeyValue("Date of Birth", randomBirthdayDate)
