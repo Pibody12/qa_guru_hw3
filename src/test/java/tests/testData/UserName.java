@@ -1,9 +1,9 @@
 package tests.testData;
 
 public enum UserName {
-    Russian("Иван", "Иванов"),
-    English("Morris", "Hoffman"),
-    Japan("江藤", "颯真");
+    RUSSIAN("Иван", "Иванов"),
+    ENGLISH("Morris", "Hoffman"),
+    JAPAN("江藤", "颯真");
 
     public final String firstName;
     public final String lastName;
